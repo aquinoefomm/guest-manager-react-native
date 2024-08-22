@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Button, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Modal, Text, Button, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import Realm from '../models/Guest';
 
 const GuestListScreen = ({ navigation }) => {
   const [guests, setGuests] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false)
 
   useEffect(() => {
     const realm = Realm;
@@ -32,7 +33,20 @@ const GuestListScreen = ({ navigation }) => {
     const realm = Realm;
     realm.write(() => {
       realm.deleteAll();
-  })};
+    })
+  };
+
+  const showModal = () => setModalVisible(true);
+  const hideModal = () => setModalVisible(false);
+
+  const handlePress = () => showModal();
+
+  const confirmAction = () => {
+    clearList()
+    hideModal()
+  };
+
+
 
   const renderItem = ({ item }) => (
     <View style={styles.item}>
@@ -63,7 +77,31 @@ const GuestListScreen = ({ navigation }) => {
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
       />
-      <Button title="Limpar Lista" onPress={clearList} />
+      <View style={styles.container}>
+        <Button title="Limpar Lista" onPress={handlePress} />
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={hideModal}
+        >
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalContent}>
+              <Text style={styles.modalTitle}>Confirma limpar a lista?</Text>
+              <View>
+                <TouchableOpacity style={styles.closeButton} onPress={hideModal}>
+                  <Text style={styles.modalText}>Cancelar</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.closeButton} onPress={confirmAction}>
+                  <Text style={styles.modalText}>Confirmar</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+
+        </Modal>
+      </View>
+
     </View>
   );
 };
@@ -98,6 +136,43 @@ const styles = StyleSheet.create({
   checkInText: {
     color: '#fff',
     fontSize: 16,
+  },
+  modalOverlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background
+  },
+  modalContent: {
+    width: 300,
+    padding: 20,
+    borderRadius: 10,
+    backgroundColor: 'white',
+    elevation: 5, // Android shadow effect
+    shadowColor: '#000', // iOS shadow
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  modalText: {
+    fontSize: 16,
+    marginBottom: 20,
+  },
+  closeButton: {
+    marginTop: 10,
+    padding: 10,
+    backgroundColor: '#007bff',
+    borderRadius: 5,
+  },
+  closeButtonText: {
+    color: 'white',
+    textAlign: 'center',
+    fontWeight: 'bold',
   },
 });
 
