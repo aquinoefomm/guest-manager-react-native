@@ -17,6 +17,9 @@ const AddGuestScreen = ({ navigation }) => {
     navigation.goBack();
   };
 
+  
+  
+
   return (
     <View style={styles.container}>
       <Text style={styles.label}>Nome do Convidado:</Text>
@@ -26,6 +29,7 @@ const AddGuestScreen = ({ navigation }) => {
         onChangeText={setName}
       />
       <Button title="Adicionar" onPress={addGuest} />
+      
     </View>
   );
 };

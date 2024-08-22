@@ -28,6 +28,12 @@ const GuestListScreen = ({ navigation }) => {
     });
   };
 
+  const clearList = () => {
+    const realm = Realm;
+    realm.write(() => {
+      realm.deleteAll();
+  })};
+
   const renderItem = ({ item }) => (
     <View style={styles.item}>
       <Text style={styles.guestName}>{item.name}</Text>
@@ -47,6 +53,7 @@ const GuestListScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+
       <Button
         title="Adicionar Convidado"
         onPress={() => navigation.navigate('AddGuest')}
@@ -56,6 +63,7 @@ const GuestListScreen = ({ navigation }) => {
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
       />
+      <Button title="Limpar Lista" onPress={clearList} />
     </View>
   );
 };
