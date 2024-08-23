@@ -9,8 +9,8 @@ const Stack = createStackNavigator();
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="GuestList">
-        <Stack.Screen name="GuestList" component={GuestListScreen} />
+      <Stack.Navigator initialRouteName="Lista de Convidados">
+        <Stack.Screen name="Convidados" component={GuestListScreen} />
         <Stack.Screen name="AddGuest" component={AddGuestScreen} />
       </Stack.Navigator>
     </NavigationContainer>
